@@ -88,12 +88,13 @@
             const password = document.getElementById('password').value;
             const submitBtn = document.getElementById('submit-btn');
 
-            // Show loading state so user knows server is waking up if inactive
+            // Show loading state
             submitBtn.disabled = true;
             submitBtn.innerText = 'Connecting...';
-            showMessage('Connecting to server (may take up to 30s if server is sleeping)...', 'success');
+            showMessage('Connecting to Railway backend...', 'success');
 
-            const endpoint = isSignup ? 'https://school-login-project.onrender.com/api/signup' : 'https://school-login-project.onrender.com/api/login';
+            // Updated Railway Endpoint URL
+            const endpoint = isSignup ? 'https://login-project-production-a9d9.up.railway.app/api/signup' : 'https://login-project-production-a9d9.up.railway.app/api/login';
             
             try {
                 const response = await fetch(endpoint, {
@@ -115,7 +116,7 @@
                     showMessage(data.message || 'Something went wrong', 'error');
                 }
             } catch (err) {
-                showMessage('Server error. Make sure backend is awake and running.', 'error');
+                showMessage('Server error. Make sure backend is running.', 'error');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = isSignup ? 'Register' : 'Next';
