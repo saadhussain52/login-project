@@ -93,8 +93,7 @@
             submitBtn.innerText = 'Connecting...';
             showMessage('Connecting to Railway backend...', 'success');
 
-            // Updated Railway Endpoint URL
-            const endpoint = isSignup ? 'https://login-project-production-a9d9.up.railway.app/api/signup' : 'https://login-project-production-a9d9.up.railway.app/api/login';
+            const endpoint = isSignup ? '/api/signup' : '/api/login';
             
             try {
                 const response = await fetch(endpoint, {

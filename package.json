@@ -1,0 +1,13 @@
+{
+  "name": "login-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node login-project/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongoose": "^9.10.1"
+  }
+}
