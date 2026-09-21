@@ -24,7 +24,7 @@
         <!-- Form Heading -->
         <div class="text-center mb-6">
             <h1 id="form-title" class="text-2xl font-normal text-gray-800">Sign in</h1>
-            <p id="form-subtitle" class="text-sm text-gray-600 mt-1"></p>
+            <p id="form-subtitle" class="text-sm text-gray-600 mt-1">to continue</p>
         </div>
 
         <!-- Message Box -->
@@ -75,7 +75,7 @@
                 submitBtn.innerText = 'Register';
             } else {
                 title.innerText = 'Sign in';
-                subtitle.innerText = 'to continue ';
+                subtitle.innerText = 'to continue';
                 switchBtn.innerText = 'Create account';
                 submitBtn.innerText = 'Next';
             }
@@ -86,9 +86,15 @@
             event.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const submitBtn = document.getElementById('submit-btn');
 
-            // Automatically route to signup or login based on mode
+            // Show loading state so user knows server is waking up if inactive
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Connecting...';
+            showMessage('Connecting to server (may take up to 30s if server is sleeping)...', 'success');
+
             const endpoint = isSignup ? 'https://school-login-project.onrender.com/api/signup' : 'https://school-login-project.onrender.com/api/login';
+            
             try {
                 const response = await fetch(endpoint, {
                     method: 'POST',
@@ -109,16 +115,21 @@
                     showMessage(data.message || 'Something went wrong', 'error');
                 }
             } catch (err) {
-                showMessage('Server error. Make sure Node.js server is running.', 'error');
+                showMessage('Server error. Make sure backend is awake and running.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = isSignup ? 'Register' : 'Next';
             }
         }
 
         function showMessage(text, type) {
             const box = document.getElementById('message-box');
             box.innerText = text;
-            box.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700');
+            box.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700', 'bg-blue-100', 'text-blue-700');
             if (type === 'error') {
                 box.classList.add('bg-red-100', 'text-red-700');
+            } else if (type === 'success' && text.includes('Connecting')) {
+                box.classList.add('bg-blue-100', 'text-blue-700');
             } else {
                 box.classList.add('bg-green-100', 'text-green-700');
             }
